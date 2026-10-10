@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## unreleased
 
+## 0.6.0 - 2026-10-10
+
 ### Added
 
  - Support for the trailing comma in the `deps` macro ([PR #37](https://github.com/teloxide/dptree/pull/37)).

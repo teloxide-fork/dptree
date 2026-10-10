@@ -9,7 +9,7 @@ This is a maintained fork of [`teloxide/dptree`](https://github.com/teloxide/dpt
 
 ```toml
 [dependencies]
-dptree = { package = "dptree-fork", version = "0.5.1" }
+dptree = { package = "dptree-fork", version = "0.6.0" }
 ```
 
 An implementation of the [chain (tree) of responsibility] pattern.
