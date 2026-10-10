@@ -1,14 +1,18 @@
 [package]
-name = "dptree"
+name = "dptree-fork"
 version = "0.5.1"
 authors = ["p0lunin <dmytro.polunin@gmail.com>", "hirrolot <hirrolot@gmail.com>"]
 edition = "2018"
 description = "An asynchronous event dispatch mechanism for Rust"
-repository = "https://github.com/teloxide/dptree"
-documentation = "https://docs.rs/dptree/"
+repository = "https://github.com/teloxide-fork/dptree"
+homepage = "https://github.com/teloxide-fork/dptree"
+documentation = "https://docs.rs/dptree-fork/"
 readme = "README.md"
 categories = ["asynchronous", "rust-patterns"]
 license = "MIT"
+
+[lib]
+name = "dptree"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -28,3 +32,18 @@ all-features = true
 rustdoc-args = ["--cfg", "docsrs", "-Znormalize-docs"]
 rustc-args = ["--cfg", "dep_docsrs"]
 cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples"]
+
+[package.metadata.release]
+tag-name = "v{{version}}"
+
+[[package.metadata.release.pre-release-replacements]]
+file = "CHANGELOG.md"
+search = "## unreleased"
+replace = "## unreleased\n\n## {{version}} - {{date}}"
+exactly = 1
+
+[[package.metadata.release.pre-release-replacements]]
+file = "README.md"
+search = 'package = "dptree-fork", version = "[^"]+"'
+replace = 'package = "dptree-fork", version = "{{version}}"'
+exactly = 1

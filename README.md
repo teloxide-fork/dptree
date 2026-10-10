@@ -1,7 +1,16 @@
 # `dptree`
-[![Rust](https://github.com/teloxide/dptree/actions/workflows/rust.yml/badge.svg)](https://github.com/teloxide/dptree/actions/workflows/rust.yml)
-[![Crates.io](https://img.shields.io/crates/v/dptree.svg)](https://crates.io/crates/dptree)
-[![Docs.rs](https://docs.rs/dptree/badge.svg)](https://docs.rs/dptree)
+[![Rust](https://github.com/teloxide-fork/dptree/actions/workflows/rust.yml/badge.svg)](https://github.com/teloxide-fork/dptree/actions/workflows/rust.yml)
+[![Crates.io](https://img.shields.io/crates/v/dptree-fork.svg)](https://crates.io/crates/dptree-fork)
+[![Docs.rs](https://docs.rs/dptree-fork/badge.svg)](https://docs.rs/dptree-fork)
+
+This is a maintained fork of [`teloxide/dptree`](https://github.com/teloxide/dptree), published on crates.io as [`dptree-fork`](https://crates.io/crates/dptree-fork). The library name is still `dptree`, so you keep writing `use dptree::...`.
+
+## Installation
+
+```toml
+[dependencies]
+dptree = { package = "dptree-fork", version = "0.5.1" }
+```
 
 An implementation of the [chain (tree) of responsibility] pattern.
 
@@ -67,7 +76,7 @@ fn not_found_handler() -> WebHandler {
  - ✔️ Runtime-agnostic: uses only the [`futures`] crate.
 
 [Dependency injection (DI)]: https://en.wikipedia.org/wiki/Dependency_injection
-[type checking]: https://github.com/teloxide/dptree/blob/master/examples/diagnostics.rs
+[type checking]: https://github.com/teloxide-fork/dptree/blob/master/examples/diagnostics.rs
 [`teloxide`]: https://github.com/teloxide/teloxide
 [`futures`]: https://github.com/rust-lang/futures-rs
 
@@ -91,7 +100,7 @@ Using dptree, you can specify arbitrary complex dispatching schemes using the sa
 ## Pitfalls
 
  - `DependencyMap` can panic at run-time if a non-existing dependency is requested. Use `dptree::type_check` to make sure that all required types are specified in the container.
- - `.branch` and `.chain` are different operations. See ["The difference between chaining and branching"](https://docs.rs/dptree/latest/dptree/struct.Handler.html#the-difference-between-chaining-and-branching).
+ - `.branch` and `.chain` are different operations. See ["The difference between chaining and branching"](https://docs.rs/dptree-fork/latest/dptree/struct.Handler.html#the-difference-between-chaining-and-branching).
 
 ## Design choices
 
@@ -107,7 +116,7 @@ In Rust, it is possible to express type-safe DI that checks all types statically
 
 The approach taken by `dptree` is to implement run-time type checking instead, via `dptree::type_check`, to make sure that all required types are provided _before_ execution. If `dptree::type_check` is _not_ called, type checking will be delayed until execution (this is not recommended). This approach works much like static type checking when you build your whole dispatch tree at a program startup; the panic message raised by `dptree::type_check` even [shows the exact locations] in user code that require insatisfied dependencies!
 
-[shows the exact locations]: https://github.com/teloxide/dptree/blob/master/examples/diagnostics.rs
+[shows the exact locations]: https://github.com/teloxide-fork/dptree/blob/master/examples/diagnostics.rs
 [`frunk`]: https://github.com/lloydmeta/frunk
 
 ## Troubleshooting

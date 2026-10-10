@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      level:
+        description: Version bump level
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+        default: patch
+        required: true
+
+permissions:
+  contents: write
+
+concurrency: release
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      # Use a prebuilt binary: cargo-release's MSRV is higher than old toolchains.
+      - name: Install cargo-release
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-release
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Release
+        env:
+          LEVEL: ${{ inputs.level }}
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: cargo release "$LEVEL" --execute --no-confirm
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="$(git tag --points-at HEAD | head -n1)"
+          if [ -z "$tag" ]; then
+            echo "No tag points at HEAD" >&2
+            exit 1
+          fi
+          version="${tag#v}"
+          awk -v ver="$version" '
+            $0 ~ "^## " ver "( |$)" { found = 1; next }
+            found && /^## / { exit }
+            found { print }
+          ' CHANGELOG.md > release_notes.md
+          gh release create "$tag" --title "$tag" --notes-file release_notes.md --verify-tag
